@@ -8,7 +8,7 @@
 
 
 
-MODULE_AUTHOR("Makoto Nanzai");
+MODULE_AUTHOR("Makoto Nanzai, Ryuuichi ueda");
 MODULE_DESCRIPTION("driver for LED control");
 MODULE_LICENSE("GPL");
 MODULE_VERSION("0.0.1"); 
@@ -35,7 +35,7 @@ static ssize_t sushi_read(struct file* flip, char* buf, size_t count, loff_t* po
 
 static ssize_t led_write(struct file* flip, const char* buf, size_t count, loff_t* pos){
   char c;
-  int i;
+  int i, a = 1;
   if(copy_from_user(&c, buf, sizeof(char)))
 	  return -EFAULT;
 
@@ -43,14 +43,39 @@ static ssize_t led_write(struct file* flip, const char* buf, size_t count, loff_
   
   if(c == '0'){
     gpio_base [10] = 1 << 25;
-  }else if(c == '1'){
-    for(i = 1 ; i < 11 ; i++){  
-      if(i % 2 == 1){
+  }else
+    if(c == '1'){
+    for(i = 0 ; i < 6 ; i++){  
+      if(a == 1){
         gpio_base[7] = 1 << 25;
+	a -= 1;
       }else{
         gpio_base [10] = 1 << 25;
+	a += 1;
       }
-     ssleep(1);
+     msleep(300);
+    }
+    msleep(300);
+    for(i = 0 ; i < 6 ; i++){
+       if(a == 1){
+         gpio_base[7] = 1 << 25;
+         a -= 1;
+       }else{
+        gpio_base [10] = 1 << 25;
+        a += 1;
+       }
+       msleep(600);
+    }
+    msleep(300);
+    for(i = 0 ; i < 6 ; i++){
+      if(a == 1){
+        gpio_base[7] = 1 << 25;
+        a -= 1;
+      }else{
+        gpio_base [10] = 1 << 25;
+        a += 1;
+      }
+      msleep(300);       
     }
   }
   
