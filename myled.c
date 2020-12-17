@@ -1,3 +1,5 @@
+/*Copyright (c) makoto nanzai. All Rights Reserved.*/
+
 #include<linux/module.h>
 #include<linux/fs.h>
 #include<linux/cdev.h>
@@ -43,42 +45,42 @@ static ssize_t led_write(struct file* flip, const char* buf, size_t count, loff_
   
   if(c == '0'){
     gpio_base [10] = 1 << 25;
-  }else
+  }else{
     if(c == '1'){
-    for(i = 0 ; i < 6 ; i++){  
-      if(a == 1){
-        gpio_base[7] = 1 << 25;
-	a -= 1;
-      }else{
-        gpio_base [10] = 1 << 25;
-	a += 1;
+      for(i = 0 ; i < 6 ; i++){  
+        if(a == 1){
+          gpio_base[7] = 1 << 25;
+	  a -= 1;
+        }else{
+          gpio_base [10] = 1 << 25;
+	  a += 1;
+        }
+        msleep(300);
       }
-     msleep(300);
-    }
-    msleep(300);
-    for(i = 0 ; i < 6 ; i++){
-       if(a == 1){
-         gpio_base[7] = 1 << 25;
-         a -= 1;
-       }else{
-        gpio_base [10] = 1 << 25;
-        a += 1;
-       }
-       msleep(600);
-    }
-    msleep(300);
-    for(i = 0 ; i < 6 ; i++){
-      if(a == 1){
-        gpio_base[7] = 1 << 25;
-        a -= 1;
-      }else{
-        gpio_base [10] = 1 << 25;
-        a += 1;
+      msleep(300);
+      for(i = 0 ; i < 6 ; i++){
+        if(a == 1){
+          gpio_base[7] = 1 << 25;
+          a -= 1;
+        }else{
+          gpio_base [10] = 1 << 25;
+          a += 1;
+        }
+        msleep(600);
       }
-      msleep(300);       
+      msleep(300);
+      for(i = 0 ; i < 6 ; i++){
+        if(a == 1){
+          gpio_base[7] = 1 << 25;
+          a -= 1;
+        }else{
+          gpio_base [10] = 1 << 25;
+          a += 1;
+        }
+        msleep(300);       
+      }
     }
   }
-  
   return 1;
 }
 
